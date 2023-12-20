@@ -1,4 +1,5 @@
 const gameContainer = document.getElementById("game");
+const cardScene = document.getElementById("cards")
 
 const COLORS = [
   "red",
@@ -44,26 +45,45 @@ let shuffledColors = shuffle(COLORS);
 function createDivsForColors(colorArray) {
   for (let color of colorArray) {
     // create a new div
-    const newDiv = document.createElement("div");
+    const newCard = document.createElement("div");
+    const newFront = document.createElement("div");
+    const newBack = document.createElement("div");
 
     // give it a class attribute for the value we are looping over
-    newDiv.classList.add(color);
+    newCard.classList.add("card");
+    newFront.classList.add("card__face", "card__face--front");
+    newBack.classList.add("card__face", "card__face--back");
 
-    // call a function handleCardClick when a div is clicked on
-    newDiv.addEventListener("click", handleCardClick);
+    //Add text to front
+    newFront.innerText="?";
 
-    // append the div to the element with an id of game
-    gameContainer.append(newDiv);
+    //add color background to card back
+    newBack.style.backgroundColor = color;
+
+    newCard.append(newFront);
+    newCard.append(newBack);
+
+    //call a function handleCardClick when a div is clicked on
+    newCard.addEventListener("click", handleCardClick);
+
+    // append the div to the element with an id of cardScene
+    cardScene.append(newCard);
   }
 }
 
-// TODO: Implement this function!
-function handleCardClick(event) {
-  // you can use event.target to see which element was clicked
-  console.log("you just clicked", event.target.classList[0]);
-  event.target.style.backgroundColor = event.target.classList[0];
-    
-}
+
 
 // when the DOM loads
 createDivsForColors(shuffledColors);
+
+//creat an array of cards
+
+// TODO: Implement this function!
+
+function handleCardClick(e) {
+  // you can use event.target to see which element was clicked
+  //console.log("you just clicked", e.target.classList[0]);
+  console.log("you just clicked" + e.target.classList)
+  e.target.classList.add('is-flipped');
+    
+}
