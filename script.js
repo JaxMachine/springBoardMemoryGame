@@ -105,7 +105,9 @@ function disableCards() {
 function unflipCards() {
   setTimeout(() => {
     firstCard.classList.remove("flipped");
+    firstCard.style.backgroundColor = "white";
     secondCard.classList.remove("flipped");
+    secondCard.style.backgroundColor = "white";
     resetBoard();
   }, 1000);
 }
