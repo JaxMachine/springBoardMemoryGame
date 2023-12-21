@@ -1,5 +1,10 @@
 const gameContainer = document.getElementById("game");
-const cardScene = document.getElementById("cards")
+//const cardScene = document.getElementById("cards");
+const gridContainer = document.querySelector(".grid-container");
+
+let firstCard, secondCard;
+let lockBoard = false;
+let score = 0;
 
 const COLORS = [
   "red",
@@ -11,7 +16,7 @@ const COLORS = [
   "blue",
   "green",
   "orange",
-  "purple"
+  "purple",
 ];
 
 // here is a helper function to shuffle an array
@@ -44,46 +49,81 @@ let shuffledColors = shuffle(COLORS);
 // it also adds an event listener for a click for each card
 function createDivsForColors(colorArray) {
   for (let color of colorArray) {
-    // create a new div
+    // create a new Card
     const newCard = document.createElement("div");
-    const newFront = document.createElement("div");
-    const newBack = document.createElement("div");
+    // const newFront = document.createElement("div");
+    // const newBack = document.createElement("div");
 
-    // give it a class attribute for the value we are looping over
     newCard.classList.add("card");
-    newFront.classList.add("card__face", "card__face--front");
-    newBack.classList.add("card__face", "card__face--back");
+    newCard.setAttribute("data-name", color);
 
-    //Add text to front
-    newFront.innerText="?";
-
-    //add color background to card back
-    newBack.style.backgroundColor = color;
-
-    newCard.append(newFront);
-    newCard.append(newBack);
-
+    // newCard.appendChild(newFront);
+    // newCard.appendChild(newBack);
+    // append the div to the element with an id of cardScene
+    gridContainer.appendChild(newCard);
     //call a function handleCardClick when a div is clicked on
     newCard.addEventListener("click", handleCardClick);
-
-    // append the div to the element with an id of cardScene
-    cardScene.append(newCard);
   }
 }
-
-
-
-// when the DOM loads
-createDivsForColors(shuffledColors);
-
-//creat an array of cards
 
 // TODO: Implement this function!
 
 function handleCardClick(e) {
-  // you can use event.target to see which element was clicked
-  //console.log("you just clicked", e.target.classList[0]);
-  console.log("you just clicked" + e.target.classList)
-  e.target.classList.add('is-flipped');
-    
+  if (lockBoard) return;
+  if (e.target === firstCard) return;
+  e.target.classList.add("flipped");
+  e.target.style.backgroundColor = e.target.dataset.name;
+
+  if (!firstCard) {
+    firstCard = e.target;
+    return;
+  }
+
+  secondCard = e.target;
+  score++;
+  document.querySelector(".score").textContent = score;
+  lockBoard = true;
+
+  checkForMatch();
 }
+
+function checkForMatch() {
+  console.log(firstCard.dataset.name);
+  console.log(secondCard.dataset.name);
+  let isMatch = firstCard.dataset.name === secondCard.dataset.name;
+
+  isMatch ? disableCards() : unflipCards();
+}
+
+function disableCards() {
+  firstCard.removeEventListener("click", handleCardClick);
+  secondCard.removeEventListener("click", handleCardClick);
+
+  resetBoard();
+}
+
+function unflipCards() {
+  setTimeout(() => {
+    firstCard.classList.remove("flipped");
+    secondCard.classList.remove("flipped");
+    resetBoard();
+  }, 1000);
+}
+
+function resetBoard() {
+  firstCard = null;
+  secondCard = null;
+  lockBoard = false;
+}
+
+function restart() {
+  resetBoard();
+  let shuffledColors = shuffle(COLORS);
+  score = 0;
+  document.querySelector(".score").textContent = score;
+  gridContainer.innerHTML = "";
+  createDivsForColors(shuffledColors);
+}
+
+// when the DOM loads
+createDivsForColors(shuffledColors);
