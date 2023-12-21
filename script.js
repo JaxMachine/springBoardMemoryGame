@@ -51,14 +51,18 @@ function createDivsForColors(colorArray) {
   for (let color of colorArray) {
     // create a new Card
     const newCard = document.createElement("div");
-    // const newFront = document.createElement("div");
-    // const newBack = document.createElement("div");
+    const newFront = document.createElement("div");
+    const newBack = document.createElement("div");
 
     newCard.classList.add("card");
     newCard.setAttribute("data-name", color);
 
-    // newCard.appendChild(newFront);
-    // newCard.appendChild(newBack);
+    newFront.classList.add("front");
+    newBack.classList.add("back");
+
+
+    newCard.appendChild(newFront);
+    newCard.appendChild(newBack);
     // append the div to the element with an id of cardScene
     gridContainer.appendChild(newCard);
     //call a function handleCardClick when a div is clicked on
@@ -68,18 +72,19 @@ function createDivsForColors(colorArray) {
 
 // TODO: Implement this function!
 
-function handleCardClick(e) {
+function handleCardClick() {
   if (lockBoard) return;
-  if (e.target === firstCard) return;
-  e.target.classList.add("flipped");
-  e.target.style.backgroundColor = e.target.dataset.name;
+  if (this === firstCard) return;
+  console.log(this);
+  this.classList.add("flipped");
+  //this.style.backgroundColor = this.dataset.name;
 
   if (!firstCard) {
-    firstCard = e.target;
+    firstCard = this;
     return;
   }
 
-  secondCard = e.target;
+  secondCard = this;
   score++;
   document.querySelector(".score").textContent = score;
   lockBoard = true;
@@ -126,6 +131,7 @@ function restart() {
   gridContainer.innerHTML = "";
   createDivsForColors(shuffledColors);
 }
+
 
 // when the DOM loads
 createDivsForColors(shuffledColors);
