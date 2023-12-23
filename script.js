@@ -1,4 +1,10 @@
 const gameContainer = document.getElementById("game");
+//const cardScene = document.getElementById("cards");
+const gridContainer = document.querySelector(".grid-container");
+
+let firstCard, secondCard;
+let lockBoard = false;
+let score = 0;
 
 const COLORS = [
   "red",
@@ -10,7 +16,7 @@ const COLORS = [
   "blue",
   "green",
   "orange",
-  "purple"
+  "purple",
 ];
 
 // here is a helper function to shuffle an array
@@ -43,25 +49,89 @@ let shuffledColors = shuffle(COLORS);
 // it also adds an event listener for a click for each card
 function createDivsForColors(colorArray) {
   for (let color of colorArray) {
-    // create a new div
-    const newDiv = document.createElement("div");
+    // create a new Card
+    const newCard = document.createElement("div");
+    const newFront = document.createElement("div");
+    const newBack = document.createElement("div");
 
-    // give it a class attribute for the value we are looping over
-    newDiv.classList.add(color);
+    newCard.classList.add("card");
+    newCard.setAttribute("data-name", color);
 
-    // call a function handleCardClick when a div is clicked on
-    newDiv.addEventListener("click", handleCardClick);
+    newFront.classList.add("front");
+    newBack.classList.add("back");
 
-    // append the div to the element with an id of game
-    gameContainer.append(newDiv);
+
+    newCard.appendChild(newFront);
+    newCard.appendChild(newBack);
+    // append the div to the element with an id of cardScene
+    gridContainer.appendChild(newCard);
+    //call a function handleCardClick when a div is clicked on
+    newCard.addEventListener("click", handleCardClick);
   }
 }
 
 // TODO: Implement this function!
-function handleCardClick(event) {
-  // you can use event.target to see which element was clicked
-  console.log("you just clicked", event.target);
+
+function handleCardClick() {
+  if (lockBoard) return;
+  if (this === firstCard) return;
+  console.log(this);
+  this.classList.add("flipped");
+  //this.style.backgroundColor = this.dataset.name;
+
+  if (!firstCard) {
+    firstCard = this;
+    return;
+  }
+
+  secondCard = this;
+  score++;
+  document.querySelector(".score").textContent = score;
+  lockBoard = true;
+
+  checkForMatch();
 }
+
+function checkForMatch() {
+  console.log(firstCard.dataset.name);
+  console.log(secondCard.dataset.name);
+  let isMatch = firstCard.dataset.name === secondCard.dataset.name;
+
+  isMatch ? disableCards() : unflipCards();
+}
+
+function disableCards() {
+  firstCard.removeEventListener("click", handleCardClick);
+  secondCard.removeEventListener("click", handleCardClick);
+
+  resetBoard();
+}
+
+function unflipCards() {
+  setTimeout(() => {
+    firstCard.classList.remove("flipped");
+    firstCard.style.backgroundColor = "white";
+    secondCard.classList.remove("flipped");
+    secondCard.style.backgroundColor = "white";
+    resetBoard();
+  }, 1000);
+}
+
+function resetBoard() {
+  firstCard = null;
+  secondCard = null;
+  lockBoard = false;
+}
+
+function restart() {
+  resetBoard();
+  let shuffledColors = shuffle(COLORS);
+  score = 0;
+  document.querySelector(".score").textContent = score;
+  gridContainer.innerHTML = "";
+  createDivsForColors(shuffledColors);
+}
+
 
 // when the DOM loads
 createDivsForColors(shuffledColors);
