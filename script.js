@@ -50,23 +50,23 @@ let shuffledColors = shuffle(COLORS);
 function createDivsForColors(colorArray) {
   for (let color of colorArray) {
     // create a new Card
-    const newCard = document.createElement("div");
-    const newFront = document.createElement("div");
-    const newBack = document.createElement("div");
+    const newColorBox = document.createElement("div");
+    const newColorBoxBack = document.createElement("div");
+    const newColorBoxFront = document.createElement("div");
 
-    newCard.classList.add("card");
-    newCard.setAttribute("data-name", color);
+    newColorBox.setAttribute("data-name", color);
+    newColorBox.classList.add("colorBox");
+    newColorBoxBack.classList.add("colorBoxBack");
 
-    newFront.classList.add("front");
-    newBack.classList.add("back");
+    newColorBoxFront.classList.add("colorBoxFront");
+    newColorBoxFront.style.backgroundColor = color;
 
+    newColorBox.appendChild(newColorBoxBack);
+    newColorBox.appendChild(newColorBoxFront);
 
-    newCard.appendChild(newFront);
-    newCard.appendChild(newBack);
-    // append the div to the element with an id of cardScene
-    gridContainer.appendChild(newCard);
+    gridContainer.appendChild(newColorBox);
     //call a function handleCardClick when a div is clicked on
-    newCard.addEventListener("click", handleCardClick);
+    newColorBox.addEventListener("click", handleCardClick);
   }
 }
 
@@ -75,12 +75,13 @@ function createDivsForColors(colorArray) {
 function handleCardClick() {
   if (lockBoard) return;
   if (this === firstCard) return;
-  console.log(this);
-  this.classList.add("flipped");
-  //this.style.backgroundColor = this.dataset.name;
+  this.classList.add("clicked");
+  this.children[0].classList.add("clicked");
+  this.children[1].classList.add("clicked");
 
   if (!firstCard) {
     firstCard = this;
+
     return;
   }
 
@@ -109,10 +110,12 @@ function disableCards() {
 
 function unflipCards() {
   setTimeout(() => {
-    firstCard.classList.remove("flipped");
-    firstCard.style.backgroundColor = "white";
-    secondCard.classList.remove("flipped");
-    secondCard.style.backgroundColor = "white";
+    firstCard.classList.remove("clicked");
+    secondCard.classList.remove("clicked");
+    firstCard.children[0].classList.remove("clicked");
+    firstCard.children[1].classList.remove("clicked");
+    secondCard.children[0].classList.remove("clicked");
+    secondCard.children[1].classList.remove("clicked");
     resetBoard();
   }, 1000);
 }
@@ -131,7 +134,6 @@ function restart() {
   gridContainer.innerHTML = "";
   createDivsForColors(shuffledColors);
 }
-
 
 // when the DOM loads
 createDivsForColors(shuffledColors);
