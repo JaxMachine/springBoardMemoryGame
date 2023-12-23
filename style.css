@@ -1,3 +1,12 @@
+@keyframes blink {
+  0% {
+    border-width: 1px;
+  }
+  50% {
+    border-width: 2px;
+  }
+}
+
 body {
   min-height: 100vh;
   min-width: 100vw;
@@ -33,13 +42,16 @@ p {
 .grid-container {
   display: grid;
   justify-content: center;
-  grid-gap: 16px;
+  grid-gap: 20px;
+  grid-auto-rows: auto;
+  grid-auto-columns: auto;
   grid-template-columns: repeat(5, 140px);
   grid-template-rows: repeat(2, 140px);
 }
 
 .colorBox {
   position: relative;
+  justify-content: center;
   transition: all 0.25s ease-in-out;
 }
 
@@ -72,4 +84,12 @@ p {
   transform: scale(1.05);
   opacity: 100;
   transition: all 0.25s ease-in-out;
+}
+
+.wrong {
+  position: absolute;
+  animation: blink 0.5s steps(1) infinite;
+  border-style: solid;
+  outline-color: red;
+  border-color: red;
 }

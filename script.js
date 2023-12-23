@@ -7,12 +7,12 @@ let lockBoard = false;
 let score = 0;
 
 const COLORS = [
-  "red",
+  "turquoise",
   "blue",
   "green",
   "orange",
   "purple",
-  "red",
+  "turquoise",
   "blue",
   "green",
   "orange",
@@ -98,7 +98,7 @@ function checkForMatch() {
   console.log(secondCard.dataset.name);
   let isMatch = firstCard.dataset.name === secondCard.dataset.name;
 
-  isMatch ? disableCards() : unflipCards();
+  isMatch ? disableCards() : markWrong();
 }
 
 function disableCards() {
@@ -106,6 +106,15 @@ function disableCards() {
   secondCard.removeEventListener("click", handleCardClick);
 
   resetBoard();
+}
+function markWrong() {
+  firstCard.children[1].classList.add("wrong");
+  secondCard.children[1].classList.add("wrong");
+  setTimeout(() => {
+    firstCard.children[1].classList.remove("wrong");
+    secondCard.children[1].classList.remove("wrong");
+  }, 1000);
+  unflipCards();
 }
 
 function unflipCards() {
