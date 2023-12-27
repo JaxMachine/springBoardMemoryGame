@@ -6,6 +6,11 @@ let firstCard, secondCard;
 let lockBoard = false;
 let score = 0;
 
+let baseColumCount = 5;
+let baseRowCount = 2;
+
+let numberOfBoxes = 10;
+
 const COLORS = [
   "turquoise",
   "blue",
@@ -19,9 +24,27 @@ const COLORS = [
   "purple",
 ];
 
+const randomColors =[];
 // here is a helper function to shuffle an array
 // it returns the same array with values shuffled
 // it is based on an algorithm called Fisher Yates if you want ot research more
+
+function generateRandom(number){
+  for(let i =0; i<number; i++)
+  {
+  const randomCode = Math.floor(Math.random()*16777215).toString(16);
+  const randomColor = "#"+ randomCode;
+  randomColors.push(randomColor);
+  randomColors.push(randomColor);
+}
+}
+function calculateGrid(){
+  let rowCount = numberOfBoxes/baseColumCount * baseRowCount;
+  console.log(rowCount);
+  gridContainer.style.setProperty('grid-template-rows','repeat('+rowCount+ ', 140px');
+}
+
+
 function shuffle(array) {
   let counter = array.length;
 
@@ -42,7 +65,8 @@ function shuffle(array) {
   return array;
 }
 
-let shuffledColors = shuffle(COLORS);
+//let shuffledColors = shuffle(COLORS);
+let shuffledColors = shuffle(randomColors);
 
 // this function loops over the array of colors
 // it creates a new div and gives it a class with the value of the color
@@ -137,7 +161,8 @@ function resetBoard() {
 
 function restart() {
   resetBoard();
-  let shuffledColors = shuffle(COLORS);
+  //let shuffledColors = shuffle(COLORS);
+  let shuffledColors = shuffle(randomColors);
   score = 0;
   document.querySelector(".score").textContent = score;
   gridContainer.innerHTML = "";
@@ -145,4 +170,6 @@ function restart() {
 }
 
 // when the DOM loads
+generateRandom(numberOfBoxes);
+calculateGrid();
 createDivsForColors(shuffledColors);

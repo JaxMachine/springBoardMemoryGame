@@ -46,7 +46,7 @@ p {
   grid-auto-rows: auto;
   grid-auto-columns: auto;
   grid-template-columns: repeat(5, 140px);
-  grid-template-rows: repeat(2, 140px);
+  /* grid-template-rows: repeat(2, 140px); */
 }
 
 .colorBox {
