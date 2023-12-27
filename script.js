@@ -138,10 +138,10 @@ function markWrong() {
     firstCard.children[1].classList.remove("wrong");
     secondCard.children[1].classList.remove("wrong");
   }, 1000);
-  unflipCards();
+  unSelect();
 }
 
-function unflipCards() {
+function unSelect() {
   setTimeout(() => {
     firstCard.classList.remove("clicked");
     secondCard.classList.remove("clicked");
@@ -170,6 +170,7 @@ function restart() {
 }
 
 // when the DOM loads
+document.querySelector(".score").textContent = score;
 generateRandom(numberOfBoxes);
 calculateGrid();
 createDivsForColors(shuffledColors);

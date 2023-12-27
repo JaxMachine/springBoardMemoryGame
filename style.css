@@ -25,19 +25,41 @@ p {
   font-size: 30px;
   font-weight: bold;
 }
+.game-board{
+  flex-direction: column;
+  margin: auto;
+  width: 1200px;
+  height: auto;
+  border-style: solid;
+  border-color: aqua;
+}
+
+.mainMenu{
+  display: flex;
+  height: 1200px;
+  align-items: center;
+  justify-content: center ;
+  text-align: center;
+  position: relative;
+  
+}
 
 .actions {
   display: flex;
+  align-items: center;
   justify-content: center;
 }
+
 
 .actions button {
   padding: 8px 16px;
   font-size: 30px;
+  margin: 15px;
   border-radius: 5;
-  background-color: burlywood;
+  background-color: teal;
   color: white;
 }
+
 
 .grid-container {
   display: grid;
